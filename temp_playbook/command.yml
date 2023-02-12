@@ -1,0 +1,15 @@
+---
+- hosts: server2.abc.com
+  remote_user: test100
+  become: yes
+  tasks:
+   - name: install httpd
+     command: yum install httpd -y
+     args:
+      creates: /var/www/html
+   - name: copy
+     shell: echo "testing dude" >> /var/www/html/index.html
+   - name: start
+     raw: systemctl start httpd
+   - name: script module
+     script: ./script1.sh

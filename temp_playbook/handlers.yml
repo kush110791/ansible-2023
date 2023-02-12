@@ -1,0 +1,23 @@
+---
+- hosts: server2.abc.com
+  remote_user: test100
+  become: yes
+  vars:
+        pkg: httpd
+  tasks:
+   - name: Install the httpd server
+     yum: name={{pkg}} state=latest
+     ignore_errors: yes
+   - name: Copy the index.html file
+     copy: src=index.html dest=/var/www/html
+     notify: 
+      - Restart httpd
+      - Install the httpd server
+   - name: start the httpd service
+     service: name=httpd state=started
+  handlers:
+   - name: Restart httpd
+     service: name=httpd state=restarted
+   - name: Install the httpd server
+     yum: name={{pkg}} state=latest
+

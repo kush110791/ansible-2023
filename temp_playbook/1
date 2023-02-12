@@ -1,0 +1,17 @@
+---
+- hosts: server2.abc.com
+  remote_user: test100
+  become: yes
+  vars:
+   pkg1: httpd
+  vars_files:
+   - abc.yml
+  tasks:
+   - name: install httpd
+     command: yum install httpd -y
+   - name: copy
+     shell: echo "testing dude" >> /var/www/html/index.html
+   - name: start
+     raw: systemctl start httpd
+   - name: script module
+     script: ./script1.sh
